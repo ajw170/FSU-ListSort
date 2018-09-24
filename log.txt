@@ -1,2 +1,6 @@
 Andrew Wood
 COP4531 - Data Structures and Algorithms
+
+Phase 1: Sepember 22 5PM - 12AM
+
+The first phase of the project was getting oriented with everything.
