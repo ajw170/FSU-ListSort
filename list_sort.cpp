@@ -10,9 +10,32 @@
     Note that the code is self-documenting.
 */
 
-//----------------------------------
-//     List<T>::Sort Implementations
-//----------------------------------
+template < typename T >
+template < class P >
+void List<T>::Sort (P& comp)
+// list sort: in place, stable, Theta(n log n), runspace O(1)
+{
+  Iterator i, j, k;
+  T t;
+  for (i = Begin(); i != End(); ++i)
+  {
+    t = *i;
+    for (k = i, j = k--; j != Begin() && comp(t,*k); --j, --k)
+      *j = *k;
+    *j = t;
+  }
+}
+
+template < typename T >
+void List<T>::Sort ()
+{
+  fsu::LessThan<T> p;
+  Sort(p);
+}
+
+
+
+/*
 
 template < typename T >
 template < class P >
@@ -37,30 +60,4 @@ void List<T>::Sort ()
   Sort(p);
 }
 
-
-
-
-
-template < typename T >
-template < class P >
-void List<T>::Sort (P& comp)
-// insertion sort: in place, stable, Theta(n*n)
-{
-  Iterator i, j, k;
-  T t;
-  for (i = Begin(); i != End(); ++i)
-  {
-    t = *i;
-    for (k = i, j = k--; j != Begin() && comp(t,*k); --j, --k)
-      *j = *k;
-    *j = t;
-  }
-}
-
-template < typename T >
-void List<T>::Sort ()
-{
-  fsu::LessThan<T> p;
-  Sort(p);
-}
-
+*/
