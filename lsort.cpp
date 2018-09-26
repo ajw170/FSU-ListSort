@@ -13,13 +13,17 @@
 
 // typedef unsigned long ElementType;
 #include <xstring.cpp>
-typedef fsu::String ElementType;
+#include <fstream>
+
+typedef int ElementType;
 
 int main()
 {
+  std::ifstream inFile("input.txt",std::ios::in);
   fsu::List < ElementType > L;  // a list
+  L.Sort();
   ElementType e;
-  while (std::cin >> e)
+  while (inFile >> e)
   {
     L.PushBack(e);
   }

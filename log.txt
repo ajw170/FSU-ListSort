@@ -3,4 +3,22 @@ COP4531 - Data Structures and Algorithms
 
 Phase 1: Sepember 22 5PM - 12AM
 
-The first phase of the project was getting oriented with everything.
+The first phase of the project was getting oriented with everything.  I first wanted to establish my general
+strategy for sorting the list.  Assuming I have an original list that looks like this:
+
+Head - Link 1 - Link 2 - Link 3 - Link 4 - Tail
+
+I determined that using the bottom-up merge sort method would require me to sort every group of 2^n links.
+So, on the first iteration, Link 1 and Link 2 would wind up in the correct order, and Link 3 and Link 4 would
+wind up in the correct order.  Then, the Link1-Link2 sublist would be merged with the Link3-Link4 sublist, and
+so on, until the entire list is sorted.
+
+Care will need to be taken to ensure edge cases are taken care of, for example, empty sublists, or sizes less
+than the sublink size at the end for example.
+
+I will be using a modified version of lsort.cpp during development to do quick tests.
+
+
+Phase 2: Setember 26, 6PM-12AM
+
+This is where the meat of the project comes in.
