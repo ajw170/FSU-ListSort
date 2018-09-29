@@ -19,6 +19,7 @@ include_directories(${LIB_DIR_2}/tcpp)
 include_directories(${LIB_DIR_2}/graph)
 include_directories(${LIB_DIR_2}/tests)
 
+SET(CMAKE_BUILD_TYPE Debug)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 

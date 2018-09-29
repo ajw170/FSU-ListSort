@@ -1,7 +1,7 @@
 Andrew Wood
 COP4531 - Data Structures and Algorithms
 
-Phase 1: Sepember 22 5PM - 12AM
+Phase 1: September 22 5PM - 12AM
 
 The first phase of the project was getting oriented with everything.  I first wanted to establish my general
 strategy for sorting the list.  Assuming I have an original list that looks like this:
@@ -21,4 +21,5 @@ I will be using a modified version of lsort.cpp during development to do quick t
 
 Phase 2: Setember 26, 6PM-12AM
 
-This is where the meat of the project comes in.
+This is where the meat of the project comes in.  Using the pseduo-code from the course notes, I began implementing the
+bottom up merge sort algorithmm only to realize that I really didn't have an understanding of how to manipulate the pointers.
