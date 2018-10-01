@@ -22,7 +22,7 @@ typedef int ElementType;
 int main()
 {
 
-  std::ifstream inFile("input.txt",std::ios::in);
+  std::ifstream inFile("longInt.txt",std::ios::in);
   fsu::List < ElementType > L;  // a list
   //L.Sort();
   ElementType e;
@@ -31,11 +31,12 @@ int main()
     L.PushBack(e);
   }
 
+  /*
   //display unsorted list
   for (typename fsu::List < ElementType > ::Iterator i = L.Begin(); i != L.End(); ++i)
   {
       std::cout << *i << '\n';
-  }
+  }*/
 
   L.Sort();
 

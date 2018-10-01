@@ -23,3 +23,148 @@ Phase 2: Setember 26, 6PM-12AM
 
 This is where the meat of the project comes in.  Using the pseduo-code from the course notes, I began implementing the
 bottom up merge sort algorithmm only to realize that I really didn't have an understanding of how to manipulate the pointers.
+
+I first assumed that the best strategy would be to separate the head and tail nodes from the list and then attach them, e.g. head->
+next = _tail and vice versa, but after thinking through the strategy realized that it would be better to use the head for a starting point.
+Only the tail would stay separated until the end.
+
+My intitial strategy was to have 3 link pointers: p1, p2, and r, where:
+
+  -p1 points to the beginning of the first segmenet
+  -p2 points to the beginning of the second segment
+  -r points to the the last link that was "re added"
+
+This means that r initially would point to the head_ node.
+
+After establishing the pointers, I thought about how I would go about advancing the pointers the right number of times.  I decided to use
+counter variables to record every time a pointer invokes the ptr = ptr->next_ call as per assignment document instructions.  I kept separate
+counts of the p1 and p2 advancements, as well as the total number of advancements for use in proving that the algorithm runs in
+O (n log n) time, but I was not concered about that immediately.
+
+
+Phase 3: September 29, Morning until 6PM:
+
+I decided that since there are so many possible edge cases, I would begin by designing the algorithm ONLY with lists of size power 2.
+THis way, there wouldn't be any strange edge cases to deal with.  At this point, inputting a list that is not a power of 2 would have
+unpredictable results.
+
+I followed the guidance given in the notes with 3 loops:
+
+1) Loop through the link with segement size n
+  2) Loop through all the sets of segmeents of size n
+    3) Loop through each set only until the proper number of advancemetns have taken place; e.g. n - 1 for each pointer.
+
+The third point was necessary becasuse for example, if you had a list of size 8 and the currents segment size was 4, and with p1 starting
+at list[0] while p2 started at list[4], each pointer would need to be advanced n-1 times.  This pattern closely followed the idea behind
+the set_merge algorithm in the fsu library.
+
+I continued in this endeavor until I was convinced that the sort works for lists of length of a power of 2.
+
+
+Phase 4: September 29, 8PM onward until past midnite:
+
+I used the XCode debugger to slowly walk through my code and resolve issues.  One major issue I had was switching pointers in the wrong
+order.  I realized I was advancing p1 and p2 before r, when in fact it should be other other way around; otherwise, there was a segmentation
+fault since the next value was "lost".  There were other issues that I commonly make while programming like not starting the count at the
+right value, etc. but the slow step-by-step debugging coupled with teh watch window that monitored the values of p1, p2, and r was
+EXTREMELY helpful and probably the saving grace of this project.  I honestly do not know how I would do something like this without a great
+debugger.
+
+Eventually, I found that my 8-element list was sorted correctly with the algorithm as coded.  I tried on much larger lists using ranuint to
+generate random integer lists.  Obviously I needed to ensure the list was a power of 2, but to my (surprise?) all of those lists were sorted
+correctly.
+
+
+Phase 5: September 29 as stated above:
+
+Before moving on to deal with the cases involving lists that are NOT of size with a power of 2, I wanted to make sure my program met the
+theoretical O (n log n) performance requriemnts.  Regarding space, I was confident the requirment was met because:
+
+  -Never in the algorithm is any new List item created
+  -Never in the algorithm is any additional dynamic space allocated in any way
+
+Therefore the "In-Place" requirement was easily verified.
+
+As for the "stable" requirement, there was never a time when equal elements switched places.  This is because when p1 and p2 are compared,
+the left hand side p1 <= p2, p1 will add the item to the list before p2.  Therefore if the elements being compared were key-value pairs, and the key
+data was the same, the key-value that came first in the original list would come first in the sorted list.  This basically the nature of the merge
+sort algorithm.
+
+To find out of the algorithm had the proper runtime, I displayed the number of p1 and p2 pointer advances at the end.  (NOTE: The advance of the "r" pointer
+was not included.  Even if it were, it would not advance more than n times, and O(2n) = O(n)).  The lists of varying sizes had the following outputs:
+
+Size 8 = 16
+Size 16 = 64
+Size 32 = 160
+Size 64 = 384
+Size 1024 = 1024
+
+..and so on.  Once I was convinced that it was "roughly" correct, I removed the extra code and ran it again, this time using the overloaded Sort(P) method
+where P is the predicate object LessThanSpy<T> "lt".  In the main program, I output the count of the predicate object after sorting the list.  The numbers
+were as follows:
+
+Size 8 = 15
+Size 16 = 45
+Size 32 = 120
+Size 64 = 300
+Size 1024 = 8946
+
+Note that the number of comparisons were less than the numbers given above.  This is due to the fact that my original code counted the pointer advances when ANY
+pointer advance involving p1 and p2 occurred. But there are numerous cases where the left or right side of the segment is exhausted, and all the algorithm needs to do
+is to append the remaining elements from the other side of the segment to the full segment.  You can argue either way whether this should be counted.  But at the end of the
+day, the MAXIMUM number of advances using p1 and p2 were the first set of numbers, and the bottom set had less counts.  In both cases, it's clear that the operations approximate
+O (n log n).
+
+Seeing this, I was convinced that the runtime for this impleemntation is at most O (n log n) which is what it should be according to what has already been
+proven.  The last phase was to see if these properties held for non-standard sizes.  Before that, I had to do the implementations for the edge cases.
+
+
+Phase 6: Edge cases: September 29, 10PM-12AM
+
+The following are Edge cases:
+
+After the kth merge loop:
+
+The left-hand subrange is shorter than n/2k-1 (and hence the right-hand subrange is empty)
+The right-hand subrange is shorter than n/2k-1
+Both left- and right-hand subranges are full length
+
+Note that these conditions can occur not just at the very end of the algorithm, but with the set iterations. For example, if the list has 3 elements:
+
+1 2 3 4 5
+
+The loop would first merge 1 and 2, then 3 and 4, but then it would be left with 5 and nothing to merge it with.  Hence the first edge case is occuring.  Then, once the
+loop was nearing the end, 1-2-3-4 is needing to be merged with 5, so the second conidtion is occuring.
+
+The examples that I had with lists only of size of a power of 2 represet the third condition.  I needed to ensure that any boundary cases as listed above are handled.  Not
+handling would potentially cause invalid pointer references which would lead to a failure.
+
+To my extreme surprise, tracing through the code there were only 3 additions necessary to handle the edge cases:
+
+-Add a check for p2 == nullptr immediately upon entering the second loop.
+-Add a check for nullptr inside the block of code that handles the remaining left segment items
+-Add a check for nullptr inside the block of code that handles the remainign right segment items
+
+In all cases, a nullptr will trigger a break from the loop and prevent that pointer (which is nullptr) from calling the ->next_ element (which would obviously result in
+segmentation fault).
+
+Final Phase: Testing with SortSpy and lsort: September 30: 12AM-2AM
+
+The final phase was to generate the test files using sortspy.cpp and lsort.cpp.  I wanted to see if the lists (1) were sorted properly and (2) if they confirmed to the
+comparison counts required.
+
+The tests at first worried me becuase the computer appeared to hang when testing a 1,000,000 element list.  I realized this was because selection sort and insertion sort
+were not commented out; since the runtime is O(n^2), the runtime would be ridiculous.  So I immediately shunned the idea of testing huge lists using O(n2) algorithms.
+The great news was that there were no reported errors.  The not so great news is that the comparison count numbers were off by a bit (a very tiny percentage of the total, but still
+off).  I don't know why this is happening, as there is essentially only one location in the code where the compare occurs.  I am 100% certain that the list is sorted
+correctly, but can't figure out why the comp_counts are off ever so slightly.
+
+As I have already been working on this project for 60+ hours I do not have any more time avaialble to troublshoot further.  I look forward to understanding why my solution
+did not hace the exact number of comparisons.
+
+Overall, I think this was a very challenging but interesting project.  I hope that the small variation in comparions will not affect the final grade too badly.
+
+
+
+
+
