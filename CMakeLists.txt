@@ -24,3 +24,4 @@ SET(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
 add_executable(lsort lsort.cpp)
+add_executable(sortspy sortspy.cpp)
