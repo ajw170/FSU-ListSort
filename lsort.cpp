@@ -31,12 +31,12 @@ int main()
     L.PushBack(e);
   }
 
-  /*
+
   //display unsorted list
   for (typename fsu::List < ElementType > ::Iterator i = L.Begin(); i != L.End(); ++i)
   {
       std::cout << *i << '\n';
-  }*/
+  }
 
   L.Sort();
 
